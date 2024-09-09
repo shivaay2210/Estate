@@ -9,7 +9,7 @@ function SearchBar() {
     type: "buy",
     city: "",
     minPrice: 0,
-    maxPrice: 0,
+    maxPrice: 100000,
   });
 
   const switchType = (val) => {
@@ -44,7 +44,7 @@ function SearchBar() {
           type="number"
           name="minPrice"
           min={0}
-          max={10000000}
+          max={100000}
           placeholder="Min Price"
           onChange={handleChange}
         />
@@ -52,15 +52,19 @@ function SearchBar() {
           type="number"
           name="maxPrice"
           min={0}
-          max={10000000}
+          max={100000}
           placeholder="Max Price"
           onChange={handleChange}
         />
+
         <Link
           to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}
         >
           <button>
-            <img src="/search.png" alt="" />
+            <img
+              src="/search.png"
+              alt=""
+            />
           </button>
         </Link>
       </form>

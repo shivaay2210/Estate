@@ -5,12 +5,14 @@ import "./ProfilePage.scss";
 import apiRequest from "../../lib/apiRequest";
 import { Suspense, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import Card from "../../components/Card/Card";
 
 function ProfilePage() {
-  const data = useLoaderData()
+  const data = useLoaderData();
+  console.log(data);
 
   const navigate = useNavigate();
-  const {updateUser, currentUser} = useContext(AuthContext)
+  const { updateUser, currentUser } = useContext(AuthContext);
 
   // useEffect(() => {
   //   if(!currentUser) {
@@ -20,10 +22,10 @@ function ProfilePage() {
 
   const handleLogout = async () => {
     try {
-      await apiRequest.post("/auth/logout"); 
+      await apiRequest.post("/auth/logout");
       // localStorage.removeItem('user')
-      updateUser(null)
-      navigate('/login')
+      updateUser(null);
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }
@@ -35,7 +37,7 @@ function ProfilePage() {
         <div className="wrapper">
           <div className="title">
             <h1>User Information</h1>
-            <Link to='/profile/update'>
+            <Link to="/profile/update">
               <button>Update Profile</button>
             </Link>
           </div>
@@ -43,7 +45,7 @@ function ProfilePage() {
             <span>
               Avatar:
               <img
-                src={currentUser.avatar || '/bg.png'}
+                src={currentUser.avatar || "/bg.png"}
                 alt=""
               />
             </span>
@@ -57,7 +59,7 @@ function ProfilePage() {
           </div>
           <div className="title">
             <h1>My List</h1>
-            <Link to='/add'>
+            <Link to="/add">
               <button>Create New Post</button>
             </Link>
           </div>
@@ -67,9 +69,8 @@ function ProfilePage() {
               resolve={data.postResponse}
               errorElement={<p>Error loading posts!</p>}
             >
-              {(postResponse) => <List posts = {postResponse.data.userPosts} /> }
-
-            </Await>  
+              <List posts={data.postResponse.data.userPosts} />
+            </Await>
           </Suspense>
 
           <div className="title">
@@ -80,22 +81,22 @@ function ProfilePage() {
               resolve={data.postResponse}
               errorElement={<p>Error loading posts!</p>}
             >
-              {(postResponse) => <List posts = {postResponse.data.savedPosts} /> }
-
-            </Await>  
+              {(postResponse) => <List posts={postResponse.data.savedPosts} />}
+            </Await>
           </Suspense>
         </div>
       </div>
       <div className="chatContainer">
         <div className="wrapper">
-        <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={data.chatResponse}
               errorElement={<p>Error loading chats!</p>}
             >
-              {(chatResponse) => <Chat chats={chatResponse.data}/> }
+              {(chatResponse) => <Chat chats={chatResponse.data} />}
 
-            </Await>  
+              {/* <Chat chats={data.chatResponse.data} /> */}
+            </Await>
           </Suspense>
         </div>
       </div>

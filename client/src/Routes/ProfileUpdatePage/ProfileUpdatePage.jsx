@@ -14,20 +14,23 @@ function ProfileUpdatePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
 
+    const formData = new FormData(e.target);
+    // const username = formData.get("username");
+    // const email = formData.get("email");
+    // const password = formData.get("password");
     const { username, email, password } = Object.fromEntries(formData);
 
     try {
-      const res = await apiRequest.put(`/users/${currentUser.id}`, {
+      const res = await apiRequest.put(`/users/${currentUser._id}`, {
         username,
         email,
         password,
-        avatar:avatar[0]
+        avatar: avatar[0],
       });
       updateUser(res.data);
       navigate("/profile");
-      console.log("success maza aa gya data update ho gya")
+      console.log("Profile Deatils Updated");
     } catch (err) {
       console.log(err);
       setError(err.response.data.message);
@@ -59,20 +62,28 @@ function ProfileUpdatePage() {
           </div>
           <div className="item">
             <label htmlFor="password">Password</label>
-            <input id="password" name="password" type="password" />
+            <input
+              id="password"
+              name="password"
+              type="password"
+            />
           </div>
           <button>Update</button>
           {error && <span>error</span>}
         </form>
       </div>
       <div className="sideContainer">
-        <img src={avatar[0] || currentUser.avatar || "/bg.png"} alt="" className="avatar" />
+        <img
+          src={avatar[0] || currentUser.avatar || "/bg.png"}
+          alt=""
+          className="avatar"
+        />
         <UploadWidget
           uwConfig={{
             cloudName: "dvwzwvq4w",
             uploadPreset: "estate",
             multiple: false,
-            maxImageFileSize: 2000000,
+            maxImageFileSize: 5000000,
             folder: "avatars",
           }}
           setState={setAvatar}

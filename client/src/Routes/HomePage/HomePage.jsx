@@ -1,21 +1,22 @@
-import './HomePage.scss'
-import SearchBar from '../../components/SearchBar/SearchBar.jsx'
-import { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext.jsx';
+import "./HomePage.scss";
+import SearchBar from "../../components/SearchBar/SearchBar.jsx";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 function HomePage() {
-  const {currentUser} = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
   console.log(currentUser);
-  
-  return ( 
+
+  return (
     <div className="HomePage">
       <div className="textContainer">
         <div className="wrapper">
-          <h1 className='title'>
-            Find Real Estate & Get Your Dream Place
-          </h1>
+          <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
           <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aut voluptatem minus repellendus dolor. Maiores tenetur quibusdam dignissimos, nisi atque vel quos explicabo quia reprehenderit debitis a necessitatibus labore repudiandae.
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aut
+            voluptatem minus repellendus dolor. Maiores tenetur quibusdam
+            dignissimos, nisi atque vel quos explicabo quia reprehenderit
+            debitis a necessitatibus labore repudiandae.
           </p>
           <SearchBar />
           <div className="boxes">
@@ -35,10 +36,13 @@ function HomePage() {
         </div>
       </div>
       <div className="imageContainer">
-        <img src="/bg.png" alt="" />
+        <img
+          src="/bg.png"
+          alt=""
+        />
       </div>
     </div>
-  )
+  );
 }
 
-export default HomePage
+export default HomePage;

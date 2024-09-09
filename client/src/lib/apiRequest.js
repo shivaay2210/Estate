@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiRequest = axios.create({
-    baseURL: "https://estate-backend-bmko.onrender.com/api/",
+    baseURL: "http://localhost:8000/api",
     withCredentials: true
 })
 
