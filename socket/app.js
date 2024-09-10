@@ -41,10 +41,18 @@
 // io.listen("4000");
 
 import { Server } from "socket.io";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: ".env",
+});
+
+
+const port = process.env.PORT;
 
 const io = new Server({
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://estate-psi-roan.vercel.app",
   },
 });
 
@@ -104,4 +112,4 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(4000);
+io.listen(port);
