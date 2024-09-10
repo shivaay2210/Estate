@@ -153,6 +153,7 @@ export const savePost = async (req, res) => {
 
 export const profilePosts = async (req, res) => {
   const tokenUserId = req.userId;
+  console.log(tokenUserId);
   try {
     const userPosts = await Post.find({ userId: tokenUserId });
 
