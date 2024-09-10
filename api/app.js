@@ -17,18 +17,18 @@ const app = express();
 const frontEndUrl = String(process.env.FRONT_END_URL);
 
 // middlewares
-// app.use(
-//   cors({
-//     origin: frontEndUrl,
-//     credentials: true,
-//   })
-// );
 app.use(
   cors({
-    origin: "*",
+    origin: frontEndUrl,
     credentials: true,
   })
 );
+// app.use(
+//   cors({
+//     origin: "*",
+//     credentials: true,
+//   })
+// );
 
 app.use(express.json()); // allow our application to send json data
 app.use(cookieParser());
