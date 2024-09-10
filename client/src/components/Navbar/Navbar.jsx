@@ -10,10 +10,10 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   // const user = true;
 
-  // const fetch = useNotificationStore((state) => state.fetch);
-  // const number = useNotificationStore((state) => state.number);
+  const fetch = useNotificationStore((state) => state.fetch);
+  const number = useNotificationStore((state) => state.number);
 
-  // if (currentUser) fetch();
+  if (currentUser) fetch();
 
   // console.log(number)
 
@@ -48,7 +48,7 @@ function Navbar() {
               to="/profile"
               className="profile"
             >
-              {/* {number > 0 && <div className="notification"> {number} </div>} */}
+              {number > 0 && <div className="notification"> {number} </div>}
               <span>Profile</span>
             </Link>
           </div>

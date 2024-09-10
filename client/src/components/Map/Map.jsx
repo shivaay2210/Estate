@@ -22,7 +22,7 @@ function Map({ items }) {
       {items.map((item) => (
         <Pin
           item={item}
-          key={item.id}
+          key={item._id}
         />
       ))}
     </MapContainer>

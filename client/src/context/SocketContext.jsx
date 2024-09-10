@@ -39,7 +39,7 @@ export const SocketContextProvider = ({ children }) => {
   // Establish the socket connection when currentUser is available
   useEffect(() => {
     if (currentUser) {
-      const newSocket = io("http://localhost:4000"); // Connect to the socket server
+      const newSocket = io("https://estate-socket-25u0.onrender.com"); // Connect to the socket server
       setSocket(newSocket);
 
       // Emit the new user event with currentUser's ID
