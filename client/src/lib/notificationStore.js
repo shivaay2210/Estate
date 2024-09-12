@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import apiRequest from "./apiRequest.js";
 
+const token = localStorage.getItem("token");
+
 export const useNotificationStore = create((set) => ({
   number: 0,
   fetch: async () => {

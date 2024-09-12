@@ -33,7 +33,7 @@ export const getPosts = async (req, res) => {
 
 export const getPost = async (req, res) => {
   const id = req.params.id;
-  // console.log(id);
+  console.log(id);
 
   try {
     const post = await Post.findById(id).populate("postDetail").populate({
@@ -41,35 +41,21 @@ export const getPost = async (req, res) => {
       select: "username avatar",
     });
 
-    // console.log(post);
-
-    const token = req.cookies?.token;
-
-    if (token) {
-      return jwt.verify(
-        token,
-        process.env.JWT_SECRET_KEY,
-        async (err, payload) => {
-          console.log(payload);
-
-          if (err) {
-            console.log(err);
-            return res
-              .status(500)
-              .json({ message: "Token verification failed" });
-          }
-
-          const saved = await SavedPost.findOne({
-            postId: id,
-            userId: payload.id,
-          });
-
-          return res.status(200).json({ ...post.toObject(), isSaved: !!saved });
-        }
-      );
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
     }
+    // console.log("decodedToken:: ", token);
 
-    res.status(200).json({ ...post.toObject(), isSaved: false });
+    const savedPost = await SavedPost.findOne({
+      userId: req.userId,
+      postId: id,
+    });
+
+    console.log("saved post lelo", savedPost);
+
+    const isSaved = savedPost ? true : false;
+
+    return res.status(200).json({ ...post.toObject(), isSaved });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to get post" });
@@ -95,6 +81,7 @@ export const addPost = async (req, res) => {
       newPost.postDetail = postDetail._id;
       await newPost.save();
     }
+
     res.status(200).json(newPost);
   } catch (err) {
     console.log(err);

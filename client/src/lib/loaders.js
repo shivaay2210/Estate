@@ -3,7 +3,12 @@ import apiRequest from "./apiRequest";
 import { AuthContext } from "../context/AuthContext";
 
 export const singlePageLoader = async ({ request, params }) => {
-  const res = await apiRequest("/posts/" + params.id);
+  const token = localStorage.getItem("token");
+  const res = await apiRequest("/posts/" + params.id, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   console.log(res.data);
   return res.data;
 };
@@ -18,7 +23,7 @@ export const listPageLoader = async ({ request, params }) => {
 
 export const profilePageLoader = async () => {
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(token);
 
   const postPromise = await apiRequest("/users/profilePosts", {
     headers: {
