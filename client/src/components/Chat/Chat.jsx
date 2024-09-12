@@ -9,7 +9,7 @@ import { useNotificationStore } from "../../lib/notificationStore.js";
 function Chat({ chats }) {
   console.log(chats);
   const [chat, setChat] = useState(null);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, token } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
 
   // console.log(socket.id)
@@ -17,7 +17,9 @@ function Chat({ chats }) {
 
   const handleOpenChat = async (id, receiver) => {
     try {
-      const res = await apiRequest("/chats/" + id);
+      const res = await apiRequest.get("/chats/" + id, { headers: {
+        Authorization: `Bearer ${token}`,
+      }, });
       console.log(res);
       if (!res.data.seenBy.includes(currentUser._id)) {
         decrease();
@@ -34,7 +36,13 @@ function Chat({ chats }) {
     const text = formData.get("text");
     if (!text) return;
     try {
-      const res = await apiRequest.post("/messages/" + chat._id, { text });
+      const res = await apiRequest.post(
+        "/messages/" + chat._id,
+        { text },
+        { headers: {
+          Authorization: `Bearer ${token}`,
+        }, }
+      );
       console.log(res);
       setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
       e.target.reset();
@@ -57,7 +65,9 @@ function Chat({ chats }) {
   useEffect(() => {
     const read = async () => {
       try {
-        await apiRequest.put("/chats/read/" + chat._id);
+        await apiRequest.put("/chats/read/" + chat._id, { headers: {
+          Authorization: `Bearer ${token}`,
+        }, });
       } catch (err) {
         console.log(err);
       }

@@ -1,5 +1,6 @@
 import { defer } from "react-router-dom";
 import apiRequest from "./apiRequest";
+import { AuthContext } from "../context/AuthContext";
 
 export const singlePageLoader = async ({ request, params }) => {
   const res = await apiRequest("/posts/" + params.id);
@@ -16,8 +17,20 @@ export const listPageLoader = async ({ request, params }) => {
 };
 
 export const profilePageLoader = async () => {
-  const postPromise = await apiRequest("/users/profilePosts");
-  const chatPromise = await apiRequest("/chats");
+  const token = localStorage.getItem("token");
+  console.log(token);
+
+  const postPromise = await apiRequest("/users/profilePosts", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const chatPromise = await apiRequest("/chats", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return defer({
     postResponse: postPromise,
     chatResponse: chatPromise,

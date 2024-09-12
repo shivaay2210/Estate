@@ -47,14 +47,13 @@ export const login = async (req, res) => {
     }
 
     // Generate a JWT token
-    const age = 1000 * 60 * 60 * 24 * 7;
     const token = jwt.sign(
       {
         id: user._id,
         isAdmin: true, // authorization
       },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: age }
+      { expiresIn: "7d" }
     );
 
     // const loggedInUser = await User.findById(user._id).select("-password");
@@ -68,14 +67,16 @@ export const login = async (req, res) => {
     console.log(user);
     console.log(userObj);
 
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        maxAge: age,
-        secure: true,
-      })
-      .status(200)
-      .json(loggedInUser);
+    // res
+    //   .cookie("token", token, {
+    //     httpOnly: true,
+    //     maxAge: age,
+    //     secure: true,
+    //   })
+    //   .status(200)
+    //   .json(loggedInUser);
+
+    res.status(200).json({ user: loggedInUser, token });
   } catch (error) {
     console.log("DB Auth Error (Login) :: ", error);
     res.status(500).json({ message: "Failed to login!" });
@@ -84,5 +85,5 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   // console.log(req.cookies?.token);
-  res.clearCookie("token").status(200).json({ message: "Logout Successful" });
+  res.status(200).json({ message: "Logout Successful" });
 };

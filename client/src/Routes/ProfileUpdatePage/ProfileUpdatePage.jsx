@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import UploadWidget from "../../components/UploadWidget/UploadWidget";
 
 function ProfileUpdatePage() {
-  const { currentUser, updateUser } = useContext(AuthContext);
+  const { currentUser, updateUser, token } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [avatar, setAvatar] = useState([]);
 
@@ -22,12 +22,20 @@ function ProfileUpdatePage() {
     const { username, email, password } = Object.fromEntries(formData);
 
     try {
-      const res = await apiRequest.put(`/users/${currentUser._id}`, {
-        username,
-        email,
-        password,
-        avatar: avatar[0],
-      });
+      const res = await apiRequest.put(
+        `/users/${currentUser._id}`,
+        {
+          username,
+          email,
+          password,
+          avatar: avatar[0],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Correct way to send token in headers
+          },
+        }
+      );
       updateUser(res.data);
       navigate("/profile");
       console.log("Profile Deatils Updated");

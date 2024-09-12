@@ -12,6 +12,7 @@ function SinglePage() {
   console.log(post);
   const [saved, setSaved] = useState(post.isSaved);
   const { currentUser } = useContext(AuthContext);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   const handleSave = async () => {
@@ -20,8 +21,16 @@ function SinglePage() {
     }
     setSaved((prev) => !prev);
     try {
-      console.log("trying to save");
-      await apiRequest.post("/users/save", { postId: post._id });
+      console.log("trying to save", token);
+      await apiRequest.post(
+        "/users/save",
+        { postId: post._id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("single post page");
     } catch (err) {
       console.log(err);

@@ -2,43 +2,9 @@ import { Chat } from "../models/chat.models.js";
 import { User } from "../models/user.models.js";
 import { Message } from "../models/message.models.js";
 
-// export const getChats = async (req, res) => {
-//   const tokenUserId = req.userId;
-
-//   try {
-//     // Find chats where the user is a participant
-//     const chats = await Chat.find({
-//       userIDs: { $in: [tokenUserId] },
-//     });
-
-//     // Populate receiver information for each chat
-//     for (const chat of chats) {
-//       const receiverId = chat.userIDs.find(
-//         (id) => id.toString() !== tokenUserId
-//       );
-
-//       console.log(receiverId);
-
-//       if (receiverId) {
-//         console.log("success");
-//         const receiver = await User.findById(receiverId).select(
-//           "_id username avatar"
-//         );
-//         const obj = receiver ? receiver.toObject() : null;
-//         console.log(obj);
-//         chat.receiver = receiver;
-//       }
-//     }
-
-//     res.status(200).json(chats);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ message: "Failed to get chats!" });
-//   }
-// };
-
 export const getChats = async (req, res) => {
   const tokenUserId = req.userId;
+  console.log("hello", tokenUserId);
 
   try {
     // Find chats where the user is a participant
@@ -106,11 +72,22 @@ export const getChat = async (req, res) => {
 
 export const addChat = async (req, res) => {
   const tokenUserId = req.userId;
-
+  const receiverId = req.body.receiverId;
+  if (tokenUserId === receiverId) {
+    return res.status(500).json({ message: "Both user and receiver id same!" });
+  }
   try {
+    // if chat already exists
+    const chat = await Chat.find({
+      userIDs: [tokenUserId, receiverId],
+    });
+    if (chat) {
+      return res.status(500).json({ message: "Chat already exists!" });
+    }
+
     // Create a new chat document
     const newChat = await Chat.create({
-      userIDs: [tokenUserId, req.body.receiverId],
+      userIDs: [tokenUserId, receiverId],
     });
     res.status(200).json(newChat);
   } catch (err) {

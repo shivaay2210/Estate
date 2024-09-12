@@ -3,11 +3,14 @@ import jwt from "jsonwebtoken";
 // type-1
 export const verifyToken = (req, res, next) => {
   try {
-    const token = req.cookies?.token;
+    const token =
+      req.headers.token || req.header("Authorization")?.replace("Bearer ", "");
+    console.log("decodedToken:: ", token);
+
     if (!token) return res.status(401).json({ message: "Not Authenticated!" });
 
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    // console.log("decodedToken:: ", decodedToken);
+    console.log("decodedToken:: ", decodedToken);
 
     req.userId = decodedToken.id;
     next();

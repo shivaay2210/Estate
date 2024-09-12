@@ -28,7 +28,7 @@ function Navbar() {
             src="/logo.png"
             alt=""
           />
-          <span>MG Estate</span>
+          <span>Estate-Explorer</span>
         </a>
         {/* <a href='/'>Home</a>
           <a href='/'>About</a>

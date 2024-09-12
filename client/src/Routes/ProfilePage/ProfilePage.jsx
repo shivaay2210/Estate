@@ -12,7 +12,7 @@ function ProfilePage() {
   console.log(data);
 
   const navigate = useNavigate();
-  const { updateUser, currentUser } = useContext(AuthContext);
+  const { updateUser, currentUser, setToken } = useContext(AuthContext);
 
   // useEffect(() => {
   //   if(!currentUser) {
@@ -23,8 +23,10 @@ function ProfilePage() {
   const handleLogout = async () => {
     try {
       await apiRequest.post("/auth/logout");
-      // localStorage.removeItem('user')
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       updateUser(null);
+      setToken(null);
       navigate("/login");
     } catch (err) {
       console.log(err);
@@ -94,7 +96,6 @@ function ProfilePage() {
               errorElement={<p>Error loading chats!</p>}
             >
               {(chatResponse) => <Chat chats={chatResponse.data} />}
-
               {/* <Chat chats={data.chatResponse.data} /> */}
             </Await>
           </Suspense>

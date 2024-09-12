@@ -24,16 +24,8 @@ app.use(
   })
 );
 
-// app.use(
-//   cors({
-//     origin: "*",
-//     credentials: true,
-//   })
-// );
-// app.use(cors());
-
 app.use(express.json()); // allow our application to send json data
-app.use(cookieParser());
+// app.use(cookieParser());
 
 // api endpoints
 app.use("/api/users", userRoute);
